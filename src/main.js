@@ -4,6 +4,8 @@ import App from './App.vue'
 import VueRouter from 'vue-router';
 import store from './store'
 import {
+  Tree,
+  Tag,
   Breadcrumb,
   BreadcrumbItem,
   Menu,
@@ -34,6 +36,9 @@ import {
 import router from '@/router'
 import 'element-ui/lib/theme-chalk/index.css';
 
+
+Vue.use(Tree)
+Vue.use(Tag)
 Vue.use(Dialog)
 Vue.use(Pagination)
 Vue.use(Tooltip)

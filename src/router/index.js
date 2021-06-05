@@ -14,7 +14,17 @@ const homeChildren = [
     path:'welcome',
     name:'Welcome',
     component: () => import('@/views/home/welcome/welcome.vue')
-  }
+  },
+  {
+    path:'1-1',
+    name:'PowerList',
+    component: () => import('@/views/home/powerList/powerList.vue')
+  },
+  {
+    path:'1-0',
+    name:'RoleList',
+    component: () => import('@/views/home/roleList/roleList.vue')
+  },
 ]
 
 const routes = [

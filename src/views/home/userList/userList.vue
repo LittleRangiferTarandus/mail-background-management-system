@@ -21,22 +21,20 @@
     </el-card>
     <dialog-form ref="dialogForm" @dialogRenewEmit='getData()' :userNet="userAddNet" titleData="添加信息" 
     :optionList='{username:"",password:"",email:"",mobile:""}' 
-    :metaList="[[201,true,'Add Seikou !'],[400,false,'Username was existed !'],]"
-    :errorText="'Add Shipai !'"></dialog-form>
+    :metaText="201"></dialog-form>
     <dialog-form ref="dialogEditForm" @dialogRenewEmit='getData()' :userNet="userEditNet" titleData="修改信息" 
     :optionList='editForm'
-    :metaList="[[200,true,'Edit Seikou !']]"
-    :errorText="'Edit Shipai !'"></dialog-form>
-    <delete ref="delete" :id='deleteId' @dialogRenewEmit='getData()'></delete>
+    :metaText="200"></dialog-form>
+    <delete ref="delete" :metaText="200" :userNet='userDeleteNet' :id='deleteId' @dialogRenewEmit='getData()'></delete>
   </div>
 </template>
 
 <script>
 import Breadcrumb from '@/components/content/breadcrumb/breadcrumb.vue'
-import {userListNet ,userAddNet,userEditNet } from '@/network/userList.js'
+import {userListNet ,userAddNet,userEditNet,userDeleteNet } from '@/network/userList.js'
 import UserTable from './child/userTable.vue'
-import DialogForm from './child/dialogForm.vue'
-import Delete from './child/delete.vue'
+import DialogForm from '@/components/content/dialogForm/dialogForm.vue'
+import Delete from '@/components/content/deleteDialog/delete.vue'
 export default {
   name:'UserList',
   components:{
@@ -86,7 +84,6 @@ export default {
     deleteClickEmitAnserse(data){
       this.$refs.delete.dialogFormVisible = true
       this.deleteId = data.id
-      console.log('miao');
     }
   },
   created(){
@@ -102,6 +99,7 @@ export default {
         pagesize:5
       },
       userEditNet:userEditNet,
+      userDeleteNet:userDeleteNet,
       userAddNet:userAddNet,
       editForm:{
         id:'',
@@ -116,9 +114,6 @@ export default {
 </script>
 
 <style scoped>
-  .el-input{
-    margin: 0;
-  }
   .item{
     height: 30px;
     line-height: 30px;

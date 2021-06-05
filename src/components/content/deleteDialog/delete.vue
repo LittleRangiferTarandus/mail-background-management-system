@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import {userDeleteNet} from '@/network/userList.js';
 export default {
   name:'DeleteDialog',
   data(){
@@ -19,26 +18,32 @@ export default {
   },
   props:{
     id:{
-      type:Number,
       default:-1
-    }
+    },
+    userNet:{
+      type:Function,
+      default(){return function(){}}
+    },
+    metaText:{
+      type:Number,
+      default: -1
+    },
   },
   methods:{
     yesClick(){
-      userDeleteNet(this.id).then(res =>{
+      this.userNet(this.id).then(res => {
         let status = res.data.meta.status
-        if(status === 200){
-          this.$message.success('Delete Seikou !')
+        let msg = res.data.meta.msg
+        if(status !== this.metaText){
+          this.$message.error(msg)
+        }else{
           this.dialogFormVisible = false
           this.$emit('dialogRenewEmit')
-        }else if (status === 400){
-          this.$message.error('Admin cannot be deleted !')
-        }else{
-          this.$message.error('Delete Shipai !')
+          this.$message.success(msg)
         }
       })
     }
-  }
+  },
 }
 </script>
 

@@ -47,7 +47,7 @@ export default {
         if(flag){
           loginNet(this.form.name,this.form.password).then(res=>{
             if(res.data.meta.status !== 200){
-              this.$message.error('Login Shippai !')
+              this.$message.error(res.data.meta.msg )
             }else{
               this.$message.success('Login Seikou !')
               //保存token

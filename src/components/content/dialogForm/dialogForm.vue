@@ -13,6 +13,12 @@
         <el-form-item  prop='mobile' label="手机号码" v-if="optionListKey.includes('mobile')" >
             <el-input placeholder="手机号码"   v-model="form.mobile" prefix-icon="el-icon-phone-outline" ></el-input>
         </el-form-item> 
+        <el-form-item   prop="roleName"  label="角色名称" v-if="optionListKey.includes('roleName')" >
+            <el-input placeholder="角色名称"   v-model="form.roleName" prefix-icon="el-icon-user"></el-input>
+        </el-form-item> 
+        <el-form-item   prop="roleDesc"  label="角色描述" v-if="optionListKey.includes('roleDesc')" >
+            <el-input placeholder="角色描述"   v-model="form.roleDesc" prefix-icon="el-icon-user"></el-input>
+        </el-form-item> 
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="noClick">取 消</el-button>
@@ -39,6 +45,14 @@ export default {
       form: {
       },
       rules:{
+        roleName: [
+          { required: true, message: '请输入角色名称', trigger: 'blur' },
+          { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
+        ],
+        roleDesc: [
+          { required: true, message: '请输入角色描述', trigger: 'blur' },
+          { min: 3, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }
+        ],
         username: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
           { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
@@ -64,20 +78,14 @@ export default {
         if(flag){
           this.userNet(this.form).then(res => {
             let status = res.data.meta.status
-            for(let item of this.metaList){
-              if(status === item[0]){
-                if(item[1] === true){
-                  this.dialogFormVisible = false
-                  this.$emit('dialogRenewEmit')
-                  this.$message.success(item[2])
-                  return
-                }else{
-                  this.$message.error(item[2])
-                  return
-                }
-              }
+            let msg = res.data.meta.msg
+            if(status !== this.metaText){
+              this.$message.error(msg)
+            }else{
+              this.dialogFormVisible = false
+              this.$emit('dialogRenewEmit')
+              this.$message.success(msg)
             }
-            this.$message.error(this.errorText)
           })
         }
       })
@@ -109,18 +117,10 @@ export default {
       type:Object,
       default(){return {}}
     },
-    metaList:{
-      type:Array,
-      default(){return []}
+    metaText:{
+      type:Number,
+      default:0
     },
-    errorText:{
-      type:String,
-      default(){return ''}
-    }
   }
 }
 </script>
-
-<style scoped>
-
-</style>
