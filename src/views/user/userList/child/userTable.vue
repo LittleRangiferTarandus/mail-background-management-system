@@ -19,7 +19,7 @@
             <el-button class="operate" type="danger" icon="el-icon-delete" size="mini" @click="deleteClick(scope.row)"></el-button>
         </el-tooltip>
         <el-tooltip   effect="dark" content="分配角色" placement="top" :enterable='false'>
-            <el-button class="operate" type="warning" icon="el-icon-setting" size="mini"></el-button>
+            <el-button class="operate" type="warning" icon="el-icon-setting" size="mini" @click="allocateRole(scope.row)"></el-button>
         </el-tooltip>
         </template>
     </el-table-column>
@@ -57,8 +57,10 @@ export default {
       })
     },
     deleteClick(data){
-      console.log('miao');
       this.$emit("deleteClickEmit",data)
+    },
+    allocateRole(data){
+      this.$emit('allocateRoleEmit',data)
     }
   }
 }

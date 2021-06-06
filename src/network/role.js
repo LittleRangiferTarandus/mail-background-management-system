@@ -1,5 +1,5 @@
 import {request} from './request'
-export function roleTableNet (data){
+export function roleTableNet (){
     return request({
         url:'roles',
         method:'get',

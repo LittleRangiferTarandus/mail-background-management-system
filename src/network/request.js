@@ -3,7 +3,7 @@ export function request(config){
   
   const instance = axios.create({
     baseURL : "http://timemeetyou.com:8889/api/private/v1/",
-    timeout : 500,
+    timeout : 5000,
   })
 //请求拦截
   instance.interceptors.request.use(

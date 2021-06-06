@@ -4,7 +4,7 @@ const homeChildren = [
   {
     path:'0-0',
     name:'UserList',
-    component: () => import('@/views/home/userList/userList.vue')
+    component: () => import('@/views/user/userList/userList.vue')
   },
   {
     path:'',
@@ -18,13 +18,23 @@ const homeChildren = [
   {
     path:'1-1',
     name:'PowerList',
-    component: () => import('@/views/home/powerList/powerList.vue')
+    component: () => import('@/views/role/powerList/powerList.vue')
   },
   {
     path:'1-0',
     name:'RoleList',
-    component: () => import('@/views/home/roleList/roleList.vue')
+    component: () => import('@/views/role/roleList/roleList.vue')
   },
+  {
+    path:'2-0',
+    name:'CommodityList',
+    component: () => import('@/views/commodity/commodityList/commodityList.vue')
+  },
+  {
+    path:'2-2',
+    name:'CommodityCategory',
+    component: () => import('@/views/commodity/commodityCategory/commodityCategory.vue')
+  }
 ]
 
 const routes = [

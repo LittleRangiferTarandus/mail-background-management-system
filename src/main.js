@@ -31,12 +31,15 @@ import {
   Switch,
   Tooltip,
   Pagination,
-  Dialog
+  Dialog,
+  Select,
+  Option
 } from 'element-ui'
 import router from '@/router'
 import 'element-ui/lib/theme-chalk/index.css';
 
-
+Vue.use(Select),
+Vue.use(Option)
 Vue.use(Tree)
 Vue.use(Tag)
 Vue.use(Dialog)

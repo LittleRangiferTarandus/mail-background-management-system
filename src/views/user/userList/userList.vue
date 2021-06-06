@@ -12,8 +12,11 @@
           <el-button  type="info" @click="$refs.dialogForm.dialogFormVisible = true">添加人员</el-button>
         </el-col>
       </el-row>
-      <user-table :user-list-data='userListDataProp' @editClickEmit='editClickEmitAnserse'
-      @deleteClickEmit='deleteClickEmitAnserse'></user-table>
+      <user-table :user-list-data='userListDataProp' 
+        @editClickEmit='editClickEmitAnserse'
+        @deleteClickEmit='deleteClickEmitAnserse'
+        @allocateRoleEmit='allocateRoleEmitAnserse'
+      ></user-table>
       <el-pagination :total="userListTotal" @size-change="handleSizeChange" @current-change="handleCurrentChange" 
       layout="total, sizes, prev, pager, next, jumper"
       :current-page="userListNetProp.pagenum" :page-size="userListNetProp.pagesize" :page-sizes='[1,2,5,10]'>
@@ -25,16 +28,26 @@
     <dialog-form ref="dialogEditForm" @dialogRenewEmit='getData()' :userNet="userEditNet" titleData="修改信息" 
     :optionList='editForm'
     :metaText="200"></dialog-form>
-    <delete ref="delete" :metaText="200" :userNet='userDeleteNet' :id='deleteId' @dialogRenewEmit='getData()'></delete>
+    <delete ref="delete" 
+      :metaText="200" 
+      :userNet='userDeleteNet' 
+      :id='deleteId' 
+      @dialogRenewEmit='getData()'
+    ></delete>
+    <allocate-role-dialog ref="allocateRole" 
+      :data="allocateData"
+      @dialogRenewEmit='getData()'
+    ></allocate-role-dialog>
   </div>
 </template>
 
 <script>
 import Breadcrumb from '@/components/content/breadcrumb/breadcrumb.vue'
-import {userListNet ,userAddNet,userEditNet,userDeleteNet } from '@/network/userList.js'
+import {userListNet ,userAddNet,userEditNet,userDeleteNet  } from '@/network/userList.js'
 import UserTable from './child/userTable.vue'
 import DialogForm from '@/components/content/dialogForm/dialogForm.vue'
 import Delete from '@/components/content/deleteDialog/delete.vue'
+import AllocateRoleDialog from './child/allocateRoleDialog.vue'
 export default {
   name:'UserList',
   components:{
@@ -42,6 +55,7 @@ export default {
     UserTable,
     DialogForm,
     Delete,
+    AllocateRoleDialog,
   },
   methods:{
     handleSizeChange(val){
@@ -84,7 +98,11 @@ export default {
     deleteClickEmitAnserse(data){
       this.$refs.delete.dialogFormVisible = true
       this.deleteId = data.id
-    }
+    },
+    allocateRoleEmitAnserse(data){
+      this.$refs.allocateRole.dialogFormVisible = true
+      this.allocateData = data
+    },
   },
   created(){
     this.getData()
@@ -107,7 +125,9 @@ export default {
         email:''
       },
       //delete
-      deleteId :-1
+      deleteId :-1,
+      //allcate
+      allocateData:{}
     }
   }
 }

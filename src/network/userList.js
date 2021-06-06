@@ -48,3 +48,13 @@ export function userDeleteNet (id){
         method:'delete',
     })
 }
+
+export function userAllocateRoleNet (id,data){
+    return request({
+        url:`/users/${id}/role`,
+        method:'put',
+        data:{
+          rid:data
+        }
+    })
+}
