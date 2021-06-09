@@ -33,11 +33,19 @@ import {
   Pagination,
   Dialog,
   Select,
-  Option
+  Option,
+  Cascader,
+  Alert,
+  Tabs,
+  TabPane
 } from 'element-ui'
 import router from '@/router'
 import 'element-ui/lib/theme-chalk/index.css';
 
+Vue.use(TabPane)
+Vue.use(Tabs)
+Vue.use(Alert)
+Vue.use(Cascader)
 Vue.use(Select),
 Vue.use(Option)
 Vue.use(Tree)

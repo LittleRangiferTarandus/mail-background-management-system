@@ -22,12 +22,22 @@
       :current-page="userListNetProp.pagenum" :page-size="userListNetProp.pagesize" :page-sizes='[1,2,5,10]'>
       </el-pagination>
     </el-card>
-    <dialog-form ref="dialogForm" @dialogRenewEmit='getData()' :userNet="userAddNet" titleData="添加信息" 
-    :optionList='{username:"",password:"",email:"",mobile:""}' 
-    :metaText="201"></dialog-form>
-    <dialog-form ref="dialogEditForm" @dialogRenewEmit='getData()' :userNet="userEditNet" titleData="修改信息" 
-    :optionList='editForm'
-    :metaText="200"></dialog-form>
+    <dialog-form ref="dialogForm" 
+      @dialogRenewEmit='getData()' 
+      :userNet="userAddNet" 
+      titleData="添加信息" 
+      :formList='{username:"",password:"",email:"",mobile:""}'
+      :inputList='addInput' 
+      :metaText="201"
+    ></dialog-form>
+    <dialog-form ref="dialogEditForm" 
+      @dialogRenewEmit='getData()' 
+      :userNet="userEditNet" 
+      titleData="修改信息" 
+      :formList='editForm'
+      :inputList='editInput'
+      :metaText="200"
+    ></dialog-form>
     <delete ref="delete" 
       :metaText="200" 
       :userNet='userDeleteNet' 
@@ -109,6 +119,38 @@ export default {
   },
   data(){
     return{
+      //add
+      addInput:[
+        {
+          prop:'username',lable:'用户名',icon:'el-icon-user',
+          rule:[ 
+            { required: true, message: '请输入用户名', trigger: 'blur' },
+            { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
+          ]
+        },
+        {
+          prop:'password',lable:'密码',icon:'el-icon-lock',
+          rule:[ 
+            { required: true, message: '请输入密码', trigger: 'blur' },
+            { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
+          ]
+        },
+        {
+          prop:'email',lable:'邮箱',icon:'el-icon-paperclip',
+          rule:[ 
+            { required: true, message: '请输入邮箱', trigger: 'blur' },
+            { pattern: /^\w+@\w+.\w+$/, message: '请输入格式正确的邮箱' , trigger: 'blur' }
+          ]
+        },
+        {
+          prop:'mobile',lable:'手机号码',icon:'el-icon-lock',
+          rule:[ 
+            { required: true, message: '请输入手机号码', trigger: 'blur' },
+            { pattern: /^1[34578]\d{9}$/, message: '目前只支持中国大陆的手机号码' , trigger: 'blur' }
+          ]
+        },
+      ],
+      //add-end
       userListDataProp : [],
       userListTotal: 0,
       userListNetProp : {
@@ -119,11 +161,28 @@ export default {
       userEditNet:userEditNet,
       userDeleteNet:userDeleteNet,
       userAddNet:userAddNet,
+      //edit
       editForm:{
         id:'',
         mobile:'',
         email:''
       },
+      editInput:[
+        {
+          prop:'email',lable:'邮箱',icon:'el-icon-paperclip',
+          rule:[ 
+            { required: true, message: '请输入邮箱', trigger: 'blur' },
+            { pattern: /^\w+@\w+.\w+$/, message: '请输入格式正确的邮箱' , trigger: 'blur' }
+          ]
+        },
+        {
+          prop:'mobile',lable:'手机号码',icon:'el-icon-lock',
+          rule:[ 
+            { required: true, message: '请输入手机号码', trigger: 'blur' },
+            { pattern: /^1[34578]\d{9}$/, message: '目前只支持中国大陆的手机号码' , trigger: 'blur' }
+          ]
+        },
+      ],
       //delete
       deleteId :-1,
       //allcate

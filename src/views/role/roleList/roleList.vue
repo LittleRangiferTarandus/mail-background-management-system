@@ -11,14 +11,17 @@
         @allocateClickEmit='allocateClickEmitAnserse'
       ></role-table>
     </el-card>
-    <dialog-form ref='editForm' titleData='修改角色' 
-      :optionList='editData' 
+    <dialog-form ref='editForm' 
+      titleData='修改角色' 
+      :formList='editData' 
       :metaText="200" 
       :userNet='roleEditNet'
+      :inputList='editInput'
       @dialogRenewEmit='$refs.roleTable.getData()'
     ></dialog-form>
     <dialog-form ref='addForm' titleData='添加角色' 
-      :optionList='{roleName:"",roleDesc:""}' 
+      :formList='{roleName:"",roleDesc:""}' 
+      :inputList='addInput'
       :metaText="201" 
       :userNet='roleAddNet' 
       @dialogRenewEmit='$refs.roleTable.getData()'
@@ -92,7 +95,42 @@ export default {
   },
   data(){
     return{
+      //edit
       editData:{},
+      editInput:[
+        {
+          prop:'roleName',lable:'角色名称',icon:'el-icon-user',
+          rule:[ 
+            { required: true, message: '请输入角色名称', trigger: 'blur' },
+            { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
+          ]
+        },
+        {
+          prop:'roleDesc',lable:'角色描述',icon:'el-icon-paperclip',
+          rule:[ 
+            { required: true, message: '请输入角色描述', trigger: 'blur' },
+            { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
+          ]
+        },
+      ],
+      //add
+      addInput:[
+        {
+          prop:'roleName',lable:'角色名称',icon:'el-icon-user',
+          rule:[ 
+            { required: true, message: '请输入角色名称', trigger: 'blur' },
+            { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
+          ]
+        },
+        {
+          prop:'roleDesc',lable:'角色描述',icon:'el-icon-paperclip',
+          rule:[ 
+            { required: true, message: '请输入角色描述', trigger: 'blur' },
+            { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
+          ]
+        },
+      ],
+      //add end
       roleEditNet:roleEditNet,
       roleAddNet:roleAddNet,
       roleDeleteNet:roleDeleteNet,
@@ -102,6 +140,7 @@ export default {
       powerTree :[],
       powerSelect:[],
       powerId:-1,
+
     }
   }
 }

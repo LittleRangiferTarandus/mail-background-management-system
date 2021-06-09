@@ -34,3 +34,15 @@ export function editCategory (data){
         }
     })
 }
+
+export function addCategory (data){
+    return request({
+        url:'/categories',
+        method:'post',
+        data:{
+            cat_name:data.cat_name,
+            cat_pid:data.cat_pid,
+            cat_level:data.cat_level
+        }
+    })
+}

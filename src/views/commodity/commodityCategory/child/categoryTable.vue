@@ -6,7 +6,7 @@
       row-key="cat_id"
       border
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
-      height="500"
+      height="400"
     >
       <el-table-column type="index"></el-table-column>
       <el-table-column prop='cat_name' label="分类名称" ></el-table-column>
@@ -54,7 +54,7 @@ export default {
       netData:{
         type:undefined,
         pagenum:1,
-        pagesize:1
+        pagesize:5
       },
       tableData:[],
       total:0,

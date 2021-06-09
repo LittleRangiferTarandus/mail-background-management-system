@@ -26,6 +26,8 @@ html,body,#app{
   content: "";
 }
 .clear,.clearfix:after {
+  display:block;
+  content: '';
   clear: both
 }
 

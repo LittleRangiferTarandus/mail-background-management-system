@@ -34,6 +34,11 @@ const homeChildren = [
     path:'2-2',
     name:'CommodityCategory',
     component: () => import('@/views/commodity/commodityCategory/commodityCategory.vue')
+  },
+  {
+    path:'2-1',
+    name:'CommodityParams',
+    component: () => import('@/views/commodity/params/params.vue')
   }
 ]
 
