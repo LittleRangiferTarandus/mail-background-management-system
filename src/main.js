@@ -37,11 +37,15 @@ import {
   Cascader,
   Alert,
   Tabs,
-  TabPane
+  TabPane,
+  Steps,
+  Step
 } from 'element-ui'
 import router from '@/router'
 import 'element-ui/lib/theme-chalk/index.css';
 
+Vue.use(Step)
+Vue.use(Steps)
 Vue.use(TabPane)
 Vue.use(Tabs)
 Vue.use(Alert)
@@ -77,9 +81,19 @@ Vue.use(Aside)
 Vue.use(Main)
 Vue.use(BreadcrumbItem)
 Vue.use(Breadcrumb)
+
+import {timeTransition} from "@/common/timeTransition.js"
+
 Vue.prototype.$message = Message
 Vue.config.productionTip = false
 Vue.use(VueRouter)
+
+Vue.filter('timeTransition',function(val){
+  return timeTransition(val)
+})
+
+Vue.prototype.$bus={}
+
 new Vue({
   router,
   store,

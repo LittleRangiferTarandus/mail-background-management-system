@@ -2,16 +2,11 @@
   <div class="userList">
     <breadcrumb :list='["用户管理","用户列表"]' class="breadcrumb"></breadcrumb>
     <el-card class="box-card">
-      <el-row :gutter="20"  slot="header" >
-        <el-col :span="16">
-          <el-input placeholder="请输入内容"  v-model="userListNetProp.query" clearable @clear='searchClearClick'>
-            <el-button slot="append" icon="el-icon-search" @click="searchClick"></el-button>
-          </el-input>
-        </el-col>
-        <el-col :span="2">
-          <el-button  type="info" @click="$refs.dialogForm.dialogFormVisible = true">添加人员</el-button>
-        </el-col>
-      </el-row>
+      <search-and-add
+        @addClick='addClickAnserse'
+        @searchClick='searchClickAnserse'
+        @searchClearClick='searchClearClickAnserse'
+      ></search-and-add>
       <user-table :user-list-data='userListDataProp' 
         @editClickEmit='editClickEmitAnserse'
         @deleteClickEmit='deleteClickEmitAnserse'
@@ -58,6 +53,7 @@ import UserTable from './child/userTable.vue'
 import DialogForm from '@/components/content/dialogForm/dialogForm.vue'
 import Delete from '@/components/content/deleteDialog/delete.vue'
 import AllocateRoleDialog from './child/allocateRoleDialog.vue'
+import SearchAndAdd from '../../../components/content/searchAndAdd/searchAndAdd.vue'
 export default {
   name:'UserList',
   components:{
@@ -66,6 +62,7 @@ export default {
     DialogForm,
     Delete,
     AllocateRoleDialog,
+    SearchAndAdd,
   },
   methods:{
     handleSizeChange(val){
@@ -87,13 +84,17 @@ export default {
         }
       })
     },
-
-    searchClick(){
+    addClickAnserse(){
+      this.$refs.dialogForm.dialogFormVisible = true
+    },
+    searchClickAnserse(query){
       //console.log(this.userListNetProp);
+      this.userListNetProp.query = query
       this.userListNetProp.pagenum = 1
       this.getData()
     },
-    searchClearClick(){
+    searchClearClickAnserse(){
+      this.userListNetProp.query = ''
       this.userListNetProp.pagenum = 1
       this.getData()
     },
