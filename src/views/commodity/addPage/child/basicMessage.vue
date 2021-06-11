@@ -19,6 +19,7 @@
             }"
             placeholder="请选择分类" 
             ref="cascader"
+            @change="handleChange"
         ></el-cascader>
     </el-form-item> 
   </el-form>
@@ -62,13 +63,6 @@ export default {
           ]
         },
         {
-          prop:'goods_introduce',lable:'商品说明',icon:'el-icon-files',
-          rule:[ 
-            { required: true, message: '请输入商品说明', trigger: 'blur' },
-            { min: 1, max: 20, message: '长度在 1 到 150 个字符', trigger: 'blur' }
-          ]
-        },
-        {
           prop:'goods_cat',lable:'商品分类',icon:'el-icon-files',
           rule:[ 
             { required: true, message: '请输入商品分类', trigger: 'blur' },
@@ -106,7 +100,25 @@ export default {
         this.$message.error('请选择末级分类')
         return false
       }
+    },
+    handleChange(value) {
+      this.$emit('handleChange',value[value.length-1])
+    },
+    returnCheck(){
+      let form = []
+      this.$refs.form.validate(flag => {
+        if(flag){
+          form = this.form
+        }else{
+          this.$message.error('请完善基础信息')
+          form = false
+        }
+      })
+      return form
     }
+  },
+  computed:{
+
   }
 }
 </script>

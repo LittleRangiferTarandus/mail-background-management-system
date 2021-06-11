@@ -2,13 +2,14 @@
   <div class="commodityList">
     <breadcrumb :list="['商品管理','商品列表']"></breadcrumb>
     <el-card>
-      <search-and-add :content="添加商品"
+      <search-and-add content="添加商品"
         @addClick='addClickAnserse'
         @searchClick='searchClickAnserse'
         @searchClearClick='searchClearClickAnserse'
       ></search-and-add>
       <commodity-table :tableData="listData"
         @deleteClick='deleteClickAnserse'
+        @editClick='editClickR'
       ></commodity-table>
       <el-pagination :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange" 
         layout="total, sizes, prev, pager, next, jumper"
@@ -27,7 +28,8 @@
 <script>
 import {
   getCommodityList,
-  deleteCommodity
+  deleteCommodity,
+  searchCommodity,
 } from '@/network/commodityList'
 import breadcrumb from '../../../components/content/breadcrumb/breadcrumb.vue'
 import SearchAndAdd from '../../../components/content/searchAndAdd/searchAndAdd.vue'
@@ -55,6 +57,22 @@ export default {
     this.getData()
   },
   methods:{
+    editDataNotify(data){
+
+    },
+    async editClickR(data){
+      let {data:res} = await searchCommodity(data.goods_id) 
+      if(res.meta.status !== 200){
+        this.$message.error(res.meta.msg)
+      }else{
+        this.$message.success(res.meta.msg)
+        let editData = this.editDataNotify(res.data)
+        this.$router.push({
+        name:'AddPage',
+        query:editData
+      })
+      }
+    },
     deleteClickAnserse(data){
       this.deleteId = data.goods_id
       this.$refs.delete.dialogFormVisible = true

@@ -16,8 +16,23 @@ export function deleteCommodity (data){
 
 export function addCommodity (data){
     return request({
-        url:'goods/',
+        url:'goods',
         method:'post',
+        data
+    })
+}
+
+export function searchCommodity (data){
+    return request({
+        url:'goods/'+data,
+        method:'get',
+    })
+}
+
+export function editCommodity (data){
+    return request({
+        url:'goods/'+data.id,
+        method:'put',
         data
     })
 }
