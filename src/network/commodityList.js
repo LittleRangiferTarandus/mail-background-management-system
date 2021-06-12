@@ -29,9 +29,9 @@ export function searchCommodity (data){
     })
 }
 
-export function editCommodity (data){
+export function editCommodity (id,data){
     return request({
-        url:'goods/'+data.id,
+        url:'goods/'+id,
         method:'put',
         data
     })

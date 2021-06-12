@@ -5,7 +5,7 @@
         :label="item.attr_name" 
     >
         <el-input   :placeholder="item.attr_name"   
-        v-model="form[item.attr_id+'']" 
+        v-model="form[item.attr_id ]" 
         :prefix-icon="item.icon"
         ></el-input>
     </el-form-item> 
@@ -24,12 +24,21 @@ export default {
       inputData:[]
     }
   },
-  watch:{
+  created(){
+    if(this.$route.params){
+      this.getData()
+    } 
+  },
+  watch:{ 
     id(a,b){
       this.getData()
     }
   },
   props:{
+    editData:{
+      type:Object,
+      default(){return{}}
+    },
     id:{
       type:Number,
       default:-1
@@ -44,7 +53,15 @@ export default {
         this.$message.success(data.meta.msg)
         let form = {}
         data.data.forEach( item => {
-          form[item.attr_id+''] = item.attr_vals
+          if(Object.keys(this.$route.params).length !== 0){
+            if(this.editData[item.attr_id]){
+              form[item.attr_id] = this.editData[item.attr_id].toString()
+            }else{
+              form[item.attr_id] = ''
+            }
+          }else{
+            form[item.attr_id] =  item.attr_vals
+          }
         })
         this.form = form
         this.inputData = data.data

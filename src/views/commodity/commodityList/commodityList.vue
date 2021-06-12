@@ -8,6 +8,7 @@
         @searchClearClick='searchClearClickAnserse'
       ></search-and-add>
       <commodity-table :tableData="listData"
+      v-if="listData"
         @deleteClick='deleteClickAnserse'
         @editClick='editClickR'
       ></commodity-table>
@@ -58,7 +59,47 @@ export default {
   },
   methods:{
     editDataNotify(data){
-
+      let only ={} ,many = {}
+      data.attrs.forEach( item => {
+        if(item.attr_sel === 'only'){
+          if(only[item.attr_id] === undefined){
+            only[item.attr_id] = [item.attr_value]
+          }else{
+            only[item.attr_id].push(item.attr_value)
+          }
+        }else if(item.attr_sel === 'many'){
+          if(many[item.attr_id] === undefined){
+            many[item.attr_id] = [item.attr_value]
+          }else{
+            many[item.attr_id].push(item.attr_value)
+          }
+        }
+      } )
+      let pics =[]
+      data.pics.forEach( item =>{
+        pics.push({
+          name:item.pics_id,
+          pic:item.pics_big_url,
+          url:item.pics_big_url
+        })
+      })
+      let form = {
+        goods_name : data.goods_name,
+        goods_weight : data.goods_weight,
+        goods_number : data.goods_number,
+        goods_price : data.goods_price 
+      }
+      //console.log(many);
+      return {
+        only,
+        many,
+        form,
+        introduce: data.goods_introduce,
+        pics,
+        cat:data.cat_three_id,
+        id:data.goods_id,
+        goods_cat:data.goods_cat
+      }
     },
     async editClickR(data){
       let {data:res} = await searchCommodity(data.goods_id) 
@@ -66,11 +107,13 @@ export default {
         this.$message.error(res.meta.msg)
       }else{
         this.$message.success(res.meta.msg)
-        let editData = this.editDataNotify(res.data)
+        console.log(res.data);
+        let editData = this.editDataNotify(res.data) 
+      //console.log(editData);
         this.$router.push({
-        name:'AddPage',
-        query:editData
-      })
+          name:'AddPage',
+          params:editData
+        })
       }
     },
     deleteClickAnserse(data){
@@ -88,7 +131,7 @@ export default {
     addClickAnserse(){
       this.$router.push({
         name:'AddPage',
-        query:{}
+        params:{}
       })
     },
     searchClickAnserse(query){

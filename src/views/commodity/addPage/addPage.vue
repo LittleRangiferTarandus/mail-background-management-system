@@ -4,16 +4,25 @@
     <el-card>
       <menu2  >
         <basic-message slot="0" ref="basicMessage"
-          @handleChange='handleChangeAnserse'
+          @handleChange='handleChangeAnserse' 
+          :editData='$route.params.form'
         ></basic-message>
-        <params slot="1" ref="params"  :id="currentId"></params>
-        <attr slot="2" ref="attr"  :id="currentId"></attr>
-        <upload-pic slot="3" ref="pic"></upload-pic>
-        <text-area slot="4" ref="text"></text-area>
+        <params slot="1" ref="params"  :id="currentId"
+          :editData='$route.params.many'
+        ></params>
+        <attr slot="2" ref="attr"  :id="currentId"
+          :editData='$route.params.only'
+        ></attr>
+        <upload-pic slot="3" ref="pic"
+          :editData='$route.params.pics'
+        ></upload-pic>
+        <text-area slot="4" ref="text"
+          :editData='$route.params.introduce'
+        ></text-area>
         <el-button slot="5" 
           type="primary"
           @click="addCommodityClick"
-        > 添加商品 </el-button>
+        > {{Object.keys(this.$route.params).length !== 0?'提交商品修改':'添加商品'}} </el-button>
       </menu2>
     </el-card>
 
@@ -21,7 +30,10 @@
 </template>
 
 <script>
-import {addCommodity} from '@/network/commodityList.js'
+import {
+  addCommodity,
+  editCommodity
+} from '@/network/commodityList.js'
 import breadcrumb from '../../../components/content/breadcrumb/breadcrumb.vue'
 import Attr from './child/attr.vue'
 import BasicMessage from './child/basicMessage.vue'
@@ -34,6 +46,11 @@ export default {
   name:'AddPage',
   mounted(){
     this.$bus.check = this.$refs.basicMessage.check
+  },
+  created(){
+    if(Object.keys(this.$route.params).length !== 0){
+      this.currentId = this.$route.params.cat
+    }
   },
   data(){
     return{
@@ -51,7 +68,11 @@ export default {
         return
       }else{
         postForm = JSON.parse(JSON.stringify(first))
-        postForm.goods_cat = postForm.goods_cat.toString()
+        if(Object.keys(this.$route.params).length === 0){
+          postForm.goods_cat = postForm.goods_cat.toString()
+        }else{
+          postForm.goods_cat = this.$route.params.goods_cat
+        }
         postForm.goods_weight = postForm.goods_weight -0
         postForm.goods_price = postForm.goods_price -0
         postForm.goods_number = postForm.goods_number -0
@@ -68,7 +89,7 @@ export default {
           if(!second[item]){return}
           second[item].forEach(item2 =>{
             attrs.push({
-              attr_id:item-0,
+              attr_id:item,
               attr_value:item2
             })
           })
@@ -76,14 +97,28 @@ export default {
         let third =   this.$refs.attr.form
         Object.keys(third).forEach(item => {
           attrs.push({
-            attr_id:item-0,
+            attr_id:item,
             attr_value:third[item]
           })
         })
         postForm.attrs = attrs
-        this.addNet(postForm)
+        if(Object.keys(this.$route.params).length !== 0){
+          this.editNet(postForm)
+        }else{
+          this.addNet(postForm)
+        }
       }
       
+    },
+    async editNet(postForm){ 
+      console.log(postForm);
+      let {data:data} = await editCommodity(this.$route.params.id,postForm)
+      if(data.meta.status !== 200){
+        this.$message.error(data.meta.msg)
+      }else{
+        this.$message.success(data.meta.msg)
+        this.$router.push('/home/2-0')
+      }
     },
     async addNet(postForm){
       let {data:data} = await addCommodity(postForm)
@@ -94,7 +129,7 @@ export default {
         this.$router.push('/home/2-0')
       }
     }
-  }
+  },
 }
 </script>
 

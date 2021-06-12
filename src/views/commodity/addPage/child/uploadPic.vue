@@ -2,7 +2,7 @@
   <div>
     <el-upload
       class="upload-demo"
-      action="http://www.ysqorz.top:8888/api/private/v1/upload"
+      action="http://www.ysqorz.top:8888/api/private/v1/"
       :headers="header"
       :on-preview="handlePreview"
       :on-remove="handleRemove"
@@ -55,6 +55,18 @@
           name:file.name
         }
         this.pics.push(picInfo)
+        console.log(this.pics);
+      }
+    },
+    props:{
+      editData:{
+        type:Array,
+        default(){return[]}
+      }, 
+    },
+    created(){
+      if(Object.keys(this.editData).length !== 0){
+        this.pics = this.editData
       }
     }
   }

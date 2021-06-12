@@ -3,7 +3,7 @@
     <el-form-item v-for="(item,index) in selectData" :key="index"
     >
       <div class="label">{{item.attr_name}}</div>
-      <el-checkbox-group v-model="attrs[item.attr_id+'']" >
+      <el-checkbox-group v-model="attrs[item.attr_id]" >
         <div v-for="(item1,index1) in selectData[index].attr_vals" :key="index1" class="checkbox" >
           <el-checkbox v-if="item1!==''" :label='item1' border size="mini"></el-checkbox>
         </div>
@@ -24,10 +24,15 @@ export default {
       attrs:{}
     }
   },
+  created(){
+    if(this.$route.params){
+      this.getData()
+    } 
+  },
   watch:{
     id(a,b){
       this.getData()
-    }
+    },
   },
   methods:{
     async getData (){
@@ -41,7 +46,15 @@ export default {
           if(item.attr_vals.length !== 0){
             item.attr_vals = item.attr_vals.split(',')
           }
-          attrs[item.attr_id+''] = item.attr_vals
+          if(Object.keys(this.$route.params).length !== 0){
+            if(this.editData[item.attr_id]){
+              attrs[item.attr_id] = this.editData[item.attr_id]
+            }else{
+              attrs[item.attr_id] = []
+            }
+          }else{
+            attrs[item.attr_id] =  item.attr_vals
+          }
         })
         this.attrs = attrs
         this.selectData = data.data
@@ -49,10 +62,14 @@ export default {
     }
   },
   props:{
+    editData:{
+      type:Object,
+      default(){return{}}
+    },
     id:{
       type:Number,
       default:-1
-    }
+    },
   }
 }
 </script>
@@ -64,6 +81,7 @@ export default {
 }
 .el-checkbox-group{
   display: flex;
+  flex-wrap: wrap;
 } 
 .label{
   text-align: start;

@@ -11,6 +11,15 @@ export default {
     }
   },
   methods:{
+  },
+  props:{
+    editData:{
+      type:String,
+      default(){return ''}
+    },  
+  },
+  created(){
+    this.text = this.editData
   }
 }
 </script>

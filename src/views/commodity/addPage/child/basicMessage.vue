@@ -9,7 +9,7 @@
         v-model="form[item.prop]" 
         :prefix-icon="item.icon"
         ></el-input>
-        <el-cascader v-else 
+        <el-cascader v-else-if="Object.keys($route.params).length === 0"
             v-model="form.goods_cat"
             :options="cascaderData"
             :props="{ 
@@ -20,6 +20,9 @@
             placeholder="请选择分类" 
             ref="cascader"
             @change="handleChange"
+        ></el-cascader>
+        <el-cascader v-else
+          disabled
         ></el-cascader>
     </el-form-item> 
   </el-form>
@@ -38,34 +41,30 @@ export default {
           prop:'goods_name',lable:'商品名称',icon:'el-icon-files',
           rule:[ 
             { required: true, message: '请输入商品名称', trigger: 'blur' },
-            { min: 3, max: 50, message: '长度在 3 到 20 个字符', trigger: 'blur' }
+            { min: 3, max: 200, message: '长度在 3 到 200 个字符', trigger: 'blur' }
           ]
         },
         {
           prop:'goods_price',lable:'商品价格',icon:'el-icon-files',
           rule:[ 
             { required: true, message: '请输入商品价格', trigger: 'blur' },
-            { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
           ]
         },
         {
           prop:'goods_weight',lable:'商品重量',icon:'el-icon-files',
           rule:[ 
             { required: true, message: '请输入商品重量', trigger: 'blur' },
-            { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
           ]
         },
         {
           prop:'goods_number',lable:'商品数量',icon:'el-icon-files',
           rule:[ 
             { required: true, message: '请输入商品数量', trigger: 'blur' },
-            { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
           ]
         },
         {
           prop:'goods_cat',lable:'商品分类',icon:'el-icon-files',
           rule:[ 
-            { required: true, message: '请输入商品分类', trigger: 'blur' },
           ]
         }
       ],
@@ -81,7 +80,12 @@ export default {
     for(let item of this.input){
       this.rules[item.prop] = item.rule
     }
-    this.getCascader()
+    if(Object.keys(this.editData).length === 0){
+      this.getCascader()
+    }
+    if(Object.keys(this.editData).length !== 0) {
+      this.form = this.editData
+    }
   },
   methods:{
     async getCascader(){
@@ -93,8 +97,11 @@ export default {
         this.cascaderData = data.data
       }
     },
-    check(){
-      if(this.form.goods_cat.length === 3){
+    check(){ 
+      if(Object.keys(this.editData).length !== 0) {
+        return true
+      }
+      if(this.form.goods_cat.length === 3 ){
         return true
       }else{
         this.$message.error('请选择末级分类')
@@ -117,8 +124,16 @@ export default {
       return form
     }
   },
-  computed:{
-
+  watch:{
+    editData(a,b){
+      this.form = a
+    }
+  },
+  props:{
+    editData:{
+      type:Object,
+      default(){return{}}
+    }
   }
 }
 </script>
