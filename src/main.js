@@ -42,11 +42,15 @@ import {
   Step,
   Checkbox,
   CheckboxGroup,
-  Upload
+  Upload,
+  Timeline,
+  TimelineItem
 } from 'element-ui'
 import router from '@/router'
 import 'element-ui/lib/theme-chalk/index.css';
 
+Vue.use(Timeline)
+Vue.use(TimelineItem)
 Vue.use(Upload)
 Vue.use(Checkbox)
 Vue.use(CheckboxGroup)
@@ -92,6 +96,9 @@ import {timeTransition} from "@/common/timeTransition.js"
 
 Vue.prototype.$message = Message
 Vue.config.productionTip = false
+
+
+
 Vue.use(VueRouter)
 
 Vue.filter('timeTransition',function(val){

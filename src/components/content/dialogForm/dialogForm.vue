@@ -7,10 +7,28 @@
           :label="item.lable" 
         >
           <el-input :placeholder="item.desc?item.desc:item.lable"   
+            v-if="!item.type || item.type === 'input'"
             v-model="form[item.prop]" 
             :prefix-icon="item.icon"
             :show-password="item.prop === 'password'"
           ></el-input>
+          <el-select :placeholder="item.desc?item.desc:item.lable" 
+            v-model="form[item.prop]" 
+            v-else-if="item.type === 'select'"
+          >
+            <el-option
+              v-for="item in item.options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          <el-cascader
+            v-if="item.type ==='cascader'"
+            v-model="form[item.prop]" 
+            :options="item.options"
+            :props="{ expandTrigger: 'hover' }"
+          ></el-cascader>
         </el-form-item> 
         <slot :formDataOfDialog='form'></slot>
       </el-form>
@@ -48,6 +66,17 @@ export default {
   },
   methods:{
     yesClick(){
+      console.log(this.userNet);
+      if(this.userNet===null){
+        this.$refs.form.validate(flag=>{
+          if(flag){
+            this.dialogFormVisible = false
+            this.$emit('dialogRenewEmit')
+            this.$message.success('更新完成')
+            return
+          }
+        })
+      }
       this.$refs.form.validate(flag => {
         if(flag){
           this.userNet(this.form).then(res => {
@@ -74,8 +103,7 @@ export default {
   },
   props:{
     userNet:{
-      type:Function,
-      default(){return function(){}}
+      default(){return null}
     },
     titleData:{
       type:String,
@@ -96,3 +124,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.el-select,.el-cascader{
+  width: 100%;
+}
+</style>

@@ -44,7 +44,17 @@ const homeChildren = [
     path:'addPage',
     name:'AddPage',
     component: () => import('@/views/commodity/addPage/addPage.vue')
-  }
+  },
+  {
+    path:'3-0',
+    name:'Order',
+    component: () => import('@/views/order/order/order.vue')
+  },
+  {
+    path:'4-0',
+    name:'Statistic',
+    component: () => import('@/views/statistic/statistic/statistic.vue')
+  },
 ]
 
 const routes = [

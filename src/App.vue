@@ -12,7 +12,4 @@ export default {
 
 <style>
 @import "./assets/css/base.css";
-.el-main{
-  line-height: 0px ! important;
-}
 </style>
